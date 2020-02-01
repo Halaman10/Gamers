@@ -69,7 +69,7 @@ function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
 		self.Weapon:SetNextPrimaryFire( CurTime() + .1)
 		self:EmitSound(ShootSound)
-		self:ShootBullet( 23, 1, 1, .03)
+		self:ShootBullet( 23, 1, 1, .02)
 		self:TakePrimaryAmmo(1)
 		self.Owner:ViewPunch( Angle( 0, 0, 0 ))
 	end
@@ -77,6 +77,7 @@ function SWEP:PrimaryAttack()
 function SWEP:Reload()
 		self.Weapon:DefaultReload( ACT_VM_RELOAD )
 		self:EmitSound(ReloadSound1)
+		timer.Simpler(2, function() self:EmitSound(ReloadSound2) end)
 end
 
 function SWEP:ShootEffects()
