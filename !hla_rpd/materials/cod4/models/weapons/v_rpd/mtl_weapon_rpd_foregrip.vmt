@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+"$basetexture" "cod4/models/weapons/v_rpd/mtl_weapon_rpd"
+"$bumpmap" "cod4/models/weapons/v_rpd/mtl_weapon_rpd_nml"
+"$phongexponenttexture" "cod4/models/weapons/v_rpd/mtl_weapon_rpd_spc"
+"$phong" "1"
+"$phongboost" "0.1"
+"$phongfresnelranges" "[ 3 6 9 ]"
+"$halflambert" "1"
+}

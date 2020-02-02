@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+"$basetexture" "cod4/models/weapons/v_rpd/mtl_weapon_rpd"
+"$envmapmask" "cod4/models/weapons/v_rpd/mtl_weapon_rpd_spc"
+"$envmap" "env_cubemap"
+"$halflambert" "1"
+}
