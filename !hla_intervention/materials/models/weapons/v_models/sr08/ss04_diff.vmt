@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models\weapons\v_models\sr08\ss04_diff"
+"$bumpmap" "models\weapons\v_models\sr08\ss04_ddn"
+"$PhongExponentTexture" "models\weapons\v_models\sr08\ss04_spec"
+"$envmap" "env_cubemap"
+"$envmapfresnel" 			"1"
+"$envmapFresnelMinMaxExp"		"[1 2 5]"
+"$envmaptint" "[.01 .01 .011]"
+"$phong" 		"1"
+"$phongboost" "1"
+"$phongtint" 			"[.7 .7 1]"
+"$phongfresnelranges" "[1.7 4.2 7.6]"
+"$halflambert" "1"
+"$ambientocclusion" "1"
+"$nocull" "1"
+"$normalmapalphaenvmapmask" 1
+
+}
