@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\peacekeeper_mk2\i_wpn_t7_loot_ar_peacekeeper_decal_c"
+	
+	"$nocull" "1"
+	"$no_draw" "1"
+}

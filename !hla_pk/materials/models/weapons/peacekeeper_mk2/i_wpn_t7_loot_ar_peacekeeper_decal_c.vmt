@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\peacekeeper_mk2\i_wpn_t7_loot_ar_peacekeeper_decal_c"
+
+	"$halflambert"     "1"
+
+	"$nocull" "1"
+	"$nodecal" "1"
+	"$alphatest" "1"
+}
