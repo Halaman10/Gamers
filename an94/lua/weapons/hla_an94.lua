@@ -1,3 +1,5 @@
+if SERVER then AddCSLuaFile() end
+
 SWEP.PrintName = "AZ-59"
 SWEP.Author = "Hala"
 SWEP.Instructions = "No Instructions"
@@ -49,11 +51,9 @@ SWEP.AllowDrop = true
 SWEP.Icon = "vgui/killicons/tfa_ins2_abakan"
 SWEP.IronSightsPos = Vector(-3.01, -4, 2.841)
 SWEP.IronSightsAng = Vector(0.47, 0.014, 0)
-Player:ShouldDropWeapon(true)
 
 local ShootSound = Sound("hla_an94_shoot.wav")
-local ReloadSound1 = Sound("hla_an94_magout.wav")
-local ReloadSound2 = Sound("hla_an94_magin.wav")
+
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
    return self.HeadshotMultiplier
@@ -75,9 +75,9 @@ function SWEP:PrimaryAttack()
 	end
 
 function SWEP:Reload()
-		self.Weapon:DefaultReload( ACT_VM_RELOAD )
-		self:EmitSound(ReloadSound1)
-		timer.Simpler(2, function() self:EmitSound(ReloadSound2) end)
+	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
+   self:DefaultReload( ACT_VM_RELOAD )
+   self:SetIronsights( false )
 end
 
 function SWEP:ShootEffects()
