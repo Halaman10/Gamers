@@ -1,0 +1,24 @@
+"Vertexlitgeneric"
+{
+	"$basetexture"  		"models\weapons\tfa_ins2\abakan\abakan_col"
+	"$bumpmap"     			"models\weapons\tfa_ins2\abakan\abakan_nor"
+
+	"$envmap" 			"env_cubemap"
+
+	"$normalmapalphaenvmapmask" 	"1"
+	"$normalmapalphaphongmask"    	"1"
+	//"$envmaptint" 			"[.05 .05 .05]"
+	$envmaptint "[0.025 0.025 0.025]"
+	"$envmapfresnel" "3"
+	
+	$phong 1
+	//$phongexponent 			"40"
+	$phongexponenttexture "models\weapons\tfa_ins2\abakan\abakan_gloss"
+	$phongboost 			"1.5"
+	$phongfresnelranges		"[.5 1 3]"
+	//"$phongalbedotint"		"1"
+	$phongalbedoboost           48
+	"$phongtint"         "[.7 .85 1]"
+//$phongtint "[1 1 1]"
+
+}
