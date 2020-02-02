@@ -1,0 +1,17 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/bo4/c_bo4_mp40/ximage_bf060990d6ab3ce"
+	$color2 "[0 0 0]"
+	$blendtintbybasealpha  "1"
+	"$bumpmap" "models/weapons/bo4/c_bo4_mp40/ximage_bf05d990d6aaeb5"
+	$phongexponenttexture "models/weapons/bo4/c_bo4_mp40/ximage_bf05c990d6aad02"
+	$phong "1"
+	$phongboost "16"
+	$phongfresnelranges "[0 0.1 1.0]"
+	$phongalbedotint "0"
+
+	$envmap "env_cubemap"
+	$envmaptint "[0.3 0.3 0.3]"
+	$normalmapalphaenvmapmask "1"
+	$envmapfresnel "1"
+}
