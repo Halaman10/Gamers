@@ -13,11 +13,11 @@ resource.AddFile("sound/hla_an94_magout")
 resource.AddFile("sound/hla_an94_magin")
 
 SWEP.Primary.ClipSize = 30
-SWEP.Primary.DefaultClip = 30
+SWEP.Primary.DefaultClip = 90
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "smg1"
 SWEP.Primary.Recoil = 0
-SWEP.Primary.ClipMax = 120
+SWEP.Primary.ClipMax = 90
 SWEP.UseHands = true
 
 SWEP.Secondary.ClipSize = -1
@@ -53,6 +53,8 @@ SWEP.IronSightsPos = Vector(-3.01, -4, 2.841)
 SWEP.IronSightsAng = Vector(0.47, 0.014, 0)
 
 local ShootSound = Sound("hla_an94_shoot.wav")
+local ReloadSoundOUT = Sound("hla_an94_magout.wav")
+local ReloadSoundIN = Sound("hla_an94_magin.wav")
 
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
@@ -71,13 +73,15 @@ function SWEP:PrimaryAttack()
 		self:EmitSound(ShootSound)
 		self:ShootBullet( 23, 1, 1, .02)
 		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( 0, 0, 0 ))
+		self.Owner:ViewPunch( Angle( .05, .34, 0 ))
 	end
 
 function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
    self:DefaultReload( ACT_VM_RELOAD )
    self:SetIronsights( false )
+   timer.Simple(.5, function() self:EmitSound(ReloadSoundOUT) end)
+   timer.Simple(1.95, function() self:EmitSound(ReloadSoundIN) end)
 end
 
 function SWEP:ShootEffects()
