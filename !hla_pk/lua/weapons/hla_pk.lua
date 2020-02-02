@@ -1,6 +1,6 @@
 if SERVER then AddCSLuaFile() end
 
-SWEP.PrintName = "Peacekeeper MK2"
+SWEP.PrintName = "Peacekeeper"
 SWEP.Author = "Hala"
 SWEP.Instructions = "No Instructions"
 
@@ -14,13 +14,13 @@ resource.AddFile("sound/hla_pk_magout")
 resource.AddFile("sound/hla_pk_magin")
 
 SWEP.Primary.ClipSize = 40
-SWEP.Primary.DefaultClip = 40
+SWEP.Primary.DefaultClip = 120
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "smg1"
 SWEP.Primary.Recoil = 0
-SWEP.Primary.ClipMax = 160
+SWEP.Primary.ClipMax = 120
 SWEP.UseHands = true
-SWEP.Primary.MaxAmmo = 160
+SWEP.Primary.MaxAmmo = 120
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
@@ -32,7 +32,7 @@ SWEP.AmmoEnt = "item_ammo_smg1_ttt"
 SWEP.Weight = 50
 SWEP.AutoSwitchTo = true
 SWEP.AutoSwitchFrom = true
-SWEP.HeadshotMultiplier = 2.7
+SWEP.HeadshotMultiplier = 2.3
 SWEP.IsSilent = false
 SWEP.NoSights = false
 SWEP.InLoadoutFor = nil --ROLE_TRAITOR/ROLE_DETECTIVE
@@ -55,6 +55,9 @@ SWEP.IronSightsPos = Vector(-3.01, -4, 2.341)
 SWEP.IronSightsAng = Vector(0.47, 0.014, 0)
 
 local ShootSound = Sound("hla_pk_shoot.wav")
+local ShootSoundS = Sound("hla_pk_shoot(S).wav")
+local ReloadSoundOUT = Sound("hla_pk_magout.wav")
+local ReloadSoundIN = Sound("hla_pk_magin.wav")
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
    return self.HeadshotMultiplier
@@ -68,17 +71,19 @@ end
 
 function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
-		self.Weapon:SetNextPrimaryFire( CurTime() + .125)
-		self:EmitSound(ShootSound)
-		self:ShootBullet( 20, 1, 1, .01)
+		self.Weapon:SetNextPrimaryFire( CurTime() + .11)
+		self:EmitSound(ShootSoundS)
+		self:ShootBullet( 21, 1, 1, .01)
 		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( .4, .1, .3 ))
+		self.Owner:ViewPunch( Angle( .27, .1, .3 ))
 	end
 
 function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
    self:DefaultReload( ACT_VM_RELOAD )
    self:SetIronsights( false )
+   timer.Simple(.25, function() self:EmitSound(ReloadSoundOUT) end)
+   timer.Simple(1.05, function() self:EmitSound(ReloadSoundIN) end)
 end
 
 
