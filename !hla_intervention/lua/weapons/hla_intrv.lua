@@ -9,19 +9,19 @@ SWEP.AdminOnly = false
 SWEP.HoldType = "ar2"
 
 resource.AddFile("sound/hla_intrv_shoot")
-resource.AddFile("sound/hla_intrv_magin")
+resource.AddFile("sound/hla_intrv_adsin")
+resource.AddFile("sound/hla_intrv_adsout")
 resource.AddFile("sound/hla_intrv_magout")
-resource.AddFile("sound/hla_intrv_deploy")
+resource.AddFile("sound/hla_intrv_magin")
 resource.AddFile("sound/hla_intrv_bolt")
-resource.AddFile("sound/hla_boltfwd")
-resource.AddFile("sound/hla_adsin")
-resource.AddFile("sound/hla_adsout")
+resource.AddFile("sound/hla_intrv_boltfwd")
+resource.AddFile("sound/hla_intrv_deploy")
 
 SWEP.Primary.ClipSize = 5
-SWEP.Primary.DefaultClip = 5
+SWEP.Primary.DefaultClip = 30
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "357"
-SWEP.Primary.Recoil = 0
+SWEP.Primary.Recoil = 10
 SWEP.Primary.ClipMax = 20
 SWEP.UseHands = true
 
@@ -53,15 +53,19 @@ SWEP.WorldModel = "addons/!hla_intervention/models/weapons/tfa_l4d2/w_ctm200.mdl
 SWEP.ViewModelFlip = false
 SWEP.AutoSpawnable = false
 SWEP.AllowDrop = true
-SWEP.Icon = " "
+SWEP.Icon = "vgui/hud/tfa_l4d2_ctm200"
 SWEP.IronSightsSensitivity = .25
 SWEP.IronSightsPos = Vector(0.341, -5.0, 2.439)
 SWEP.IronSightsAng = Vector(0, 0, 0)
 SWEP.Offset = {Pos = {Up = 0, Right = 1, Forward = -3,}, Ang = {Up = 0, Right = 0, Forward = 180,}}
 
 local ShootSound = Sound("hla_intrv_shoot.wav")
-local Intrv_Deploy = Sound("hla_intrv_deploy.wav")
 local Intrv_ADSIN = Sound("hla_intrv_adsin.wav")
+local ReloadSoundIN = Sound("hla_intrv_magin.wav")
+local ReloadSoundOUT = Sound("hla_intrv_magout.wav")
+local BoltSound = Sound("hla_intrv_bolt.wav")
+local BoltFWDSound = Sound("hla_intrv_boltfwd.wav")
+local DeploySound = Sound("hla_intrv_deploy.wav")
 
 
 function SWEP:SetZoom(state)
@@ -166,17 +170,23 @@ end
 function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
 		self.Weapon:SetNextPrimaryFire( CurTime() + 1.8)
-		self:ShootBullet( 58, 1, 1, .0001)
+		self:ShootBullet( 58, 10, 1, .0001)
 		self:EmitSound(ShootSound)
 		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( 0, 0, 0 ))
-	end
+		self.Owner:ViewPunch( Angle( 5, 0, 0 ))
+		timer.Simple(.75, function() self:EmitSound(BoltFWDSound) end)
+		timer.Simple(1.15, function() self:EmitSound(BoltSound) end)
+end
 
 function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
    self:DefaultReload( ACT_VM_RELOAD )
    self:SetIronsights( false )
    self:SetZoom( false )
+   timer.Simple(.5, function() self:EmitSound(ReloadSoundOUT) end)
+   timer.Simple(1.75, function() self:EmitSound(ReloadSoundIN) end)
+   timer.Simple(2.25, function() self:EmitSound(BoltFWDSound) end)
+   timer.Simple(2.65, function() self:EmitSound(BoltSound) end)
 end
 
 function SWEP:ShootEffects()
