@@ -1,6 +1,6 @@
 if SERVER then AddCSLuaFile() end
 
-SWEP.PrintName = "MP40"
+SWEP.PrintName = "MP7"
 SWEP.Author = "Hala"
 SWEP.Instructions = "No Instructions"
 
@@ -8,16 +8,17 @@ SWEP.Spawnable = true
 SWEP.AdminOnly = false
 SWEP.HoldType = "smg"
 
-resource.AddFile("sound/hla_mp40_shoot")
-resource.AddFile("sound/hla_mp40_magout")
-resource.AddFile("sound/hla_mp40_magin")
+resource.AddFile("sound/hla_mp7_shoot")
+resource.AddFile("sound/hla_mp7_magin")
+resource.AddFile("sound/hla_mp7_magin2")
+resource.AddFile("sound/hla_mp7_magout")
 
-SWEP.Primary.ClipSize = 50
-SWEP.Primary.DefaultClip = 150
+SWEP.Primary.ClipSize = 35
+SWEP.Primary.DefaultClip = 140
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "smg1"
 SWEP.Primary.Recoil = 0
-SWEP.Primary.ClipMax = 100
+SWEP.Primary.ClipMax = 105
 SWEP.UseHands = true
 
 SWEP.Secondary.ClipSize = -1
@@ -43,19 +44,20 @@ SWEP.Slot = 2
 SWEP.SlotPos = 3
 SWEP.DrawAmmo = true
 SWEP.DrawCrosshair = true
-SWEP.ViewModel = "addons/!hla_mp40/models/weapons/bo4/c_bo4_mp40.mdl"
-SWEP.WorldModel = "addons/!hla_mp40/models/weapons/bo4/w_bo4_mp40.mdl"
+SWEP.ViewModel = "addons/!hla_mp7/models/razorswep/weapons/v_smg_mp7.mdl"
+SWEP.WorldModel = "addons/!hla_mp7/models/razorswep/weapons/w_smg_mp7.mdl"
 SWEP.ViewModelFlip = false
 SWEP.AutoSpawnable = false
 SWEP.AllowDrop = true
-SWEP.Icon = "vgui/hud/tfa_bo4_mp40"
-SWEP.IronSightsPos = Vector(-4.401, -3.433, 3.007)
-SWEP.IronSightsAng = Vector(1.406, 0, 0)
+SWEP.Icon = "vgui/gdcw_mp7"
+SWEP.IronSightsPos = Vector(-2.491, -4.422, 3.024)
+SWEP.IronSightsAng = Vector(0.3, 0.1, 0)
+SWEP.Offset = {Pos = {Up = 0, Right = 1, Forward = -3,}, Ang = {Up = 0, Right = 0, Forward = 180,}}
 
-local ShootSound = Sound("hla_mp40_shoot.wav")
-local ReloadSound = Sound("hla_mp40_magout.wav")
-local ReloadSound2 = Sound("hla_mp40_magin.wav")
-
+local ShootSound = Sound("hla_mp7_shoot.wav")
+local SoundMagIN = Sound("hla_mp7_magin.wav")
+local SoundMagIN2 = Sound("hla_mp7_magin2.wav")
+local SoundMagOUT = Sound("hla_mp7_magout.wav")
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
    return self.HeadshotMultiplier
@@ -69,20 +71,22 @@ end
 
 function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
-		self.Weapon:SetNextPrimaryFire( CurTime() + .13)
+		self.Weapon:SetNextPrimaryFire( CurTime() + .075)
+		self:ShootBullet( 13, 1, 1, .03)
 		self:EmitSound(ShootSound)
-		self:ShootBullet( 17, 1, 1, .02)
 		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( 0, 0, 0 ))
+		self.Owner:ViewPunch( Angle( .37, .4, 0 ))
 	end
 
 function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
 	self:DefaultReload( ACT_VM_RELOAD )
-	timer.Simple(.25, function() self:EmitSound(ReloadSound) end)
-	timer.Simple(1.2, function() self:EmitSound(ReloadSound2) end)
 	self:SetIronsights( false )
+	timer.Simple(.4, function() self:EmitSound(SoundMagOUT) end)
+	timer.Simple(1.4, function() self:EmitSound(SoundMagIN) end)	
+	timer.Simple(1.8, function() self:EmitSound(SoundMagIN2) end)
 end
+
 
 function SWEP:ShootEffects()
 
