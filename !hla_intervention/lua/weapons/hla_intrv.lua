@@ -170,10 +170,10 @@ end
 function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
 		self.Weapon:SetNextPrimaryFire( CurTime() + 1.8)
-		self:ShootBullet( 58, 10, 1, .0001)
+		self:ShootBullet( 58, 2, 1, .001)
 		self:EmitSound(ShootSound)
 		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( 5, 0, 0 ))
+		self.Owner:ViewPunch( Angle( 0, 2, 4 ))
 		timer.Simple(.75, function() self:EmitSound(BoltFWDSound) end)
 		timer.Simple(1.15, function() self:EmitSound(BoltSound) end)
 end
