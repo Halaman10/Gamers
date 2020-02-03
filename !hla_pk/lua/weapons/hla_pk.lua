@@ -75,7 +75,7 @@ function SWEP:PrimaryAttack()
 		self:EmitSound(ShootSound)
 		self:ShootBullet( 21, 1, 1, .01)
 		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( .27, .1, .3 ))
+		self.Owner:ViewPunch( Angle( 0, 0, 0 ))
 	end
 
 function SWEP:Reload()
