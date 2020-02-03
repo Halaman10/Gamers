@@ -1,0 +1,5 @@
+"UnLitGeneric"
+{
+	"$baseTexture" "models\weapons\global\stencil"
+	"$translucent" "1"
+}
