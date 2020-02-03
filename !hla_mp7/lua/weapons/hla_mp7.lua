@@ -12,6 +12,12 @@ resource.AddFile("sound/hla_mp7_shoot")
 resource.AddFile("sound/hla_mp7_magin")
 resource.AddFile("sound/hla_mp7_magin2")
 resource.AddFile("sound/hla_mp7_magout")
+resource.AddFile("sound/hla_mp7_forgrip")
+resource.AddFile("sound/hla_mp7_boltrelease")
+resource.AddFile("sound/hla_mp7_draw")
+resource.AddFile("sound/hla_mp7_handle")
+resource.AddFile("sound/hla_mp7_magdraw")
+
 
 SWEP.Primary.ClipSize = 35
 SWEP.Primary.DefaultClip = 140
@@ -55,9 +61,6 @@ SWEP.IronSightsAng = Vector(0.3, 0.1, 0)
 SWEP.Offset = {Pos = {Up = 0, Right = 1, Forward = -3,}, Ang = {Up = 0, Right = 0, Forward = 180,}}
 
 local ShootSound = Sound("hla_mp7_shoot.wav")
-local SoundMagIN = Sound("hla_mp7_magin.wav")
-local SoundMagIN2 = Sound("hla_mp7_magin2.wav")
-local SoundMagOUT = Sound("hla_mp7_magout.wav")
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
    return self.HeadshotMultiplier
@@ -81,12 +84,8 @@ function SWEP:PrimaryAttack()
 function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
 	self:DefaultReload( ACT_VM_RELOAD )
-	self:SetIronsights( false )
-	timer.Simple(.4, function() self:EmitSound(SoundMagOUT) end)
-	timer.Simple(1.4, function() self:EmitSound(SoundMagIN) end)	
-	timer.Simple(1.8, function() self:EmitSound(SoundMagIN2) end)
+	self:SetIronsights( false )	
 end
-
 
 function SWEP:ShootEffects()
 
@@ -95,3 +94,91 @@ function SWEP:ShootEffects()
 	self.Owner:SetAnimation( PLAYER_ATTACK1 ) -- 3rd Person Animation
 
 end
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_magout.wav"
+instbl["name"] = "MP7.magout"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_foregrip.wav"
+instbl["name"] = "MP7.foregrip"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_boltrelease.wav"
+instbl["name"] = "MP7.boltrelease"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_handle.wav"
+instbl["name"] = "MP7.handle"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_draw.wav"
+instbl["name"] = "MP7.draw"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_magin.wav"
+instbl["name"] = "MP7.magin"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_magin2.wav"
+instbl["name"] = "MP7.magin2"
+
+sound.Add(instbl)
+
+local instbl = {}
+instbl["channel"] = "3"
+instbl["level"] = "75"
+instbl["volume"] = "1.0"
+instbl["CompatibilityAttenuation"] = "1"
+instbl["pitch"] = "95,105"
+instbl["sound"] = "hla_mp7_magdraw.wav"
+instbl["name"] = "MP7.magdraw"
+
+sound.Add(instbl)
