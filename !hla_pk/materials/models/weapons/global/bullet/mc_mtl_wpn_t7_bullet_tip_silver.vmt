@@ -1,0 +1,17 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\global\bullet\i_wpn_t7_bullet_detail_c"
+	"$bumpmap"     "models\weapons\global\bullet\i_mtl_attach_t7_bullet_n"
+	"$PhongExponentTexture" "models\weapons\global\bullet\i_wpn_t7_bullet_detail_s"
+	
+	"$normalmapalphaphongmask"	"1"
+	"$phong"					"1"
+	"$phongboost"				"2.5"
+	"$phongalbedotint" 			"1"	
+	"$phongfresnelranges"       "[1 2.5 7]"
+	"$phongtint"				"[1 1 1]"
+	
+	"$color2"					"[0.4 0.4 0.4]" 
+	"$nocull"					"1"
+	"$nodecal"					"1"
+}

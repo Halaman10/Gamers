@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\loyalists\blackops3\public\i_wpn_t7_global_decal_set_01_c_1024"
+
+	"$halflambert"     "1"
+
+	"$nocull" "1"
+	"$nodecal" "1"
+	"$alphatest" "1"
+}
