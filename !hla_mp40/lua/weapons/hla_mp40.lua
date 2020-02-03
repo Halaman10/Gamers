@@ -71,7 +71,7 @@ function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
 		self.Weapon:SetNextPrimaryFire( CurTime() + .13)
 		self:EmitSound(ShootSound)
-		self:ShootBullet( 17, 1, 1, .02)
+		self:ShootBullet( 17, 1, 1, .01)
 		self:TakePrimaryAmmo(1)
 		self.Owner:ViewPunch( Angle( 0, 0, 0 ))
 	end
