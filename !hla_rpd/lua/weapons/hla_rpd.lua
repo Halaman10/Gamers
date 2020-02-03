@@ -56,7 +56,7 @@ SWEP.AutoSpawnable = false
 SWEP.AllowDrop = true
 SWEP.Icon = "vgui/rpd_killicon"
 SWEP.IronSightsPos = Vector(-3.39, -4, 3.141)
-SWEP.IronSightsAng = Vector(0.47, 0.014, 0)
+SWEP.IronSightsAng = Vector(-2.47, 0.014, 0)
 
 local ShootSound = Sound("hla_rpd_shoot.wav")
 local SoundClipIN = Sound("hla_rpd_clipin.wav")
@@ -82,7 +82,7 @@ function SWEP:PrimaryAttack()
 	if( !self:CanPrimaryAttack() ) then return end
 		self.Weapon:SetNextPrimaryFire( CurTime() + .1)
 		self:EmitSound(ShootSound)
-		self:ShootBullet( 13, 1, 1, .01)
+		self:ShootBullet( 13, 1.5, 1, .01)
 		self:TakePrimaryAmmo(1)
 		self.Owner:ViewPunch( Angle( -.01, -.14, 0 ))
 	end
