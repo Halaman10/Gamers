@@ -12,10 +12,14 @@ SWEP.Primary.ClipSize = 30
 SWEP.Primary.DefaultClip = 90
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "smg1"
-SWEP.Primary.Recoil = 0
+SWEP.Primary.Recoil = 1
 SWEP.Primary.ClipMax = 90
 SWEP.UseHands = true
 SWEP.Primary.Sound = Sound( "AN94.Shoot" )
+SWEP.Primary.Damage         = 23
+SWEP.Primary.NumShots       = 1
+SWEP.Primary.Cone           = 0.02
+SWEP.Primary.Delay          = 0.1
 
 SWEP.Base = "weapon_tttbase"
 SWEP.Kind = WEAPON_HEAVY
@@ -112,13 +116,28 @@ function SWEP:DoDrawCrosshair( x, y )
 	return true
 end
 
-function SWEP:PrimaryAttack()
-	if( !self:CanPrimaryAttack() ) then return end
-		self.Weapon:SetNextPrimaryFire( CurTime() + .1)
-		self:ShootBullet( 23, 1, 1, .02)
-		self:TakePrimaryAmmo(1)
-		self.Owner:ViewPunch( Angle( .05, .34, 0 ))
-	end
+function SWEP:PrimaryAttack(worldsnd)
+
+   self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
+   self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
+
+   if not self:CanPrimaryAttack() then return end
+
+   if not worldsnd then
+      self:EmitSound( self.Primary.Sound, self.Primary.SoundLevel )
+   elseif SERVER then
+      sound.Play(self.Primary.Sound, self:GetPos(), self.Primary.SoundLevel)
+   end
+
+   self:ShootBullet( self.Primary.Damage, self.Primary.Recoil, self.Primary.NumShots, self:GetPrimaryCone() )
+
+   self:TakePrimaryAmmo( 1 )
+
+   local owner = self:GetOwner()
+   if not IsValid(owner) or owner:IsNPC() or (not owner.ViewPunch) then return end
+
+   owner:ViewPunch( Angle( util.SharedRandom(self:GetClass(),-0.2,-0.1,0) * self.Primary.Recoil, util.SharedRandom(self:GetClass(),-0.1,0.1,1) * self.Primary.Recoil, 0 ) )
+end
 
 function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
