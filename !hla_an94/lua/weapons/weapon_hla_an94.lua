@@ -16,10 +16,10 @@ SWEP.Primary.Recoil = 1.8
 SWEP.Primary.ClipMax = 90
 SWEP.UseHands = true
 SWEP.Primary.Sound = Sound( "AN94.Shoot" )
-SWEP.Primary.Damage         = 23
+SWEP.Primary.Damage         = 18
 SWEP.Primary.NumShots       = 1
 SWEP.Primary.Cone           = 0.02
-SWEP.Primary.Delay          = 0.1
+SWEP.Primary.Delay          = 0.13
 
 SWEP.Base = "weapon_tttbase"
 SWEP.Kind = WEAPON_HEAVY
