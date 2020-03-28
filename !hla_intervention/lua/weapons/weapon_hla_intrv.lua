@@ -12,13 +12,13 @@ SWEP.Primary.ClipSize = 5
 SWEP.Primary.DefaultClip = 30
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "357"
-SWEP.Primary.Recoil = 2
+SWEP.Primary.Recoil = 4
 SWEP.Primary.ClipMax = 20
 SWEP.UseHands = true
 SWEP.Primary.Sound = Sound( "TFA_L4D2_CTM200.1" )
 SWEP.Primary.Damage         = 58
 SWEP.Primary.NumShots       = 1
-SWEP.Primary.Cone           = .001
+SWEP.Primary.Cone           = .002
 SWEP.Primary.Delay          = 1.8
 
 SWEP.Secondary.ClipSize = -1
