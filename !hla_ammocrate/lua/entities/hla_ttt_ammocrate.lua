@@ -1,8 +1,7 @@
-AddCSLuaFile()
-
 if SERVER then 
 	AddCSLuaFile("hla_ttt_ammocrate.lua")
 	resource.AddFile("materials/vgui/entities/ttt_ammocrate.png")
+	resource.AddFile("materials/vgui/entities/ttt_ammocrate_nobg.png")
 end
 
 if CLIENT then
@@ -21,6 +20,37 @@ if CLIENT then
 										  num    = ent:GetAmmoLeft() or 0 }
 				end 
 	};
+	local entList = {}
+	local ammoMaterial = Material("materials/vgui/entities/ttt_ammocrate_nobg.png", "no clamp")
+
+    hook.Add("OnEntityCreated", "CheckForProp", function(ent)
+        if(!IsValid(ent) or not trackingEnts[ent:GetClass()]) then return end
+
+        	table.insert(entList, ent)
+
+    	hook.Add( "HUDPaint", "ToScreenExample", function()
+			if(LocalPlayer():GetRole() != ROLE_TRAITOR) then return end
+            	-- Get a list of all props and draw a marker on screen for each prop
+            	for i = 1, #entList do
+					v = entList[i]
+                	local point = v:GetPos() + v:OBBCenter() -- Gets the position of the entity, specifically the center
+                	local data2D = point:ToScreen() -- Gets the position of the entity on your screen
+    
+                	-- The position is not visible from our screen, don't draw and continue onto the next prop
+                	if ( not data2D.visible ) then continue end
+                	-- Draw a simple text over where the prop is
+					surface.SetDrawColor(255, 255, 255, 255)
+					surface.SetMaterial(ammoMaterial)
+					surface.DrawTexturedRectRotated(data2D.x, data2D.y, 35, 35, 0)
+				end
+		end)
+    end)    
+    hook.Add("EntityRemoved", "Removing?", function(ent)
+        if(IsValid(ent) && trackingEnts[ent:GetClass()]) then
+
+        table.Empty(entList)
+        end
+    end)
 end
 
 ENT.AmmocrateAmmo = 20
@@ -39,17 +69,24 @@ ENT.AmmoFreq = 0.5
 
 AccessorFunc(ENT, "Placer", "Placer")
 
+trackingEnts = {
+	["hla_ttt_ammocrate"] = true
+}
+
+
 function ENT:SetupDataTables()
 	self:NetworkVar("Int", 0, "AmmoLeft")
 end
 
-function ENT:Initialize()
+function ENT:Initialize(ply)
 	self:SetModel(self.Model)
 	
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_BBOX)
 	
+	local ammoSymbol = Material("materials/vgui/entities/ttt_ammocrate.png")
+
 	local b = 32
 	self:SetCollisionBounds(Vector(-b, -b, -b), Vector(b, b, b))
 	
@@ -64,14 +101,14 @@ function ENT:Initialize()
 		self:SetUseType(SIMPLE_USE)
 	end
 	
-	self:SetModelScale( self:GetModelScale() *.5, 1)
+	self:SetModelScale( self:GetModelScale() *.75, 1)
 	self:SetHealth(150)
 	
 	if CLIENT then
 		self:DisplayInfo()
 	end
 	
-	self:SetColor(Color(132, 134, 140, 255))
+	self:SetColor(Color(65, 56, 58))
 	
 	local preammo = self.AmmocrateAmmo
 	self:SetAmmoLeft(preammo or 20)
@@ -80,42 +117,55 @@ function ENT:Initialize()
 	self.fingerprints = {}
 end
 
-function ENT:DisplayInfo()
-		local GetPTranslation = LANG.GetParamTranslation
-		local hintammo = self:GetAmmoLeft()
-		self.TargetIDHint = {
+function ENT:DisplayInfo(ply)
+	local GetPTranslation = LANG.GetParamTranslation
+	local hintammo = self:GetAmmoLeft()
+	
+	self.TargetIDHint = {
 		name= "Ammo Crate",
 		hint= "Press " .. Key("+use", "USE") .. " to get ammo! Ammo Remaining: %d",
 		fmt=function(ent, str)
 			return Format(str, IsValid(self) and self:GetAmmoLeft() or 0)
 		end
-		}
+	}
 end
 
-function ENT:GiveAmmo( ply )
+function ENT:GiveAmmo( ply )			--BUG: Gives ammo if holding their magneto, holster or crowbar.
 	local AmmoLeft = self:GetAmmoLeft()
-	
+	local wep = ply:GetActiveWeapon()
+	local restricted = {
+		["weapon_zm_carry"] = true,
+		["weapon_zm_improvised"] = true, 
+		["weapon_ttt_unarmed"] = true, 
+		["weapon_ttt_wtester"] = true
+	}
+
 	if AmmoLeft > 0 then
 		self:SetAmmoLeft(AmmoLeft - 1)
 
-		local ammos = {"item_box_buckshot_ttt", "item_ammo_357_ttt", "item_ammo_pistol_ttt", "item_ammo_smg1_ttt" }
-		local randomAmmo = table.Random(ammos)
-	
-		local ammo = ents.Create(randomAmmo)
-		local ammoPos = self:GetPos()
-		ammoPos.z = ammoPos.z + 15 --So that the ammo doesn't get stuck in the ammo crate
-		ammo:SetPos(ammoPos)
-		ammo:Spawn()
-		 
-		local ammocrate = ammo:GetPhysicsObject()
-		local a, b, c = math.random(-70,70) , math.random(-70,70) , math.random (10, 90)
-		ammocrate:SetVelocity( Vector(a,b,c ) )
-	
+		local reserveAmmo = ply:GetAmmoCount(wep:GetPrimaryAmmoType())
+		local primaryammo = wep.Primary.Ammo
+		local secondaryammo = wep.Secondary.Ammo
+		
+		for k, v in ipairs(ply:GetWeapons(), ply:GetAmmo()) do
+			if (v.Primary.Ammo) then
+					if reserveAmmo < 150 then						--To ensure players don't have too much ammo.
+					ply:GiveAmmo(30, v.Primary.Ammo)				--Gives ammo to their weapons
+					ply:GiveAmmo(30, v.Secondary.Ammo)
+				else
+					if AmmoLeft < 20 then
+					self:SetAmmoLeft(AmmoLeft)						--Since we tried to take ammo it will deduct it	and we want to get the ammo back in the box.											
+				end	
+					ply:ChatPrint("You have maximum reserve ammo!")		--Tells them that they can't get more ammo since they have max reserve ammo.
+				end														
+			end
+		end	
 	else
-		ply:ChatPrint("No ammo left!")
+		ply:ChatPrint("No ammo left!")								--Writes in chat that there is no more ammo in the box.
 	end
 	hook.Run("TTTPlayerUsedAmmoCrate", ply, self, restocked)
 end
+
 
 function ENT:Use(ply)
 	if IsValid(ply) and ply:IsPlayer() and ply:IsActive() then
