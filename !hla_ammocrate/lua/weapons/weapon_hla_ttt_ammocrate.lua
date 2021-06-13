@@ -1,6 +1,7 @@
 if SERVER then 
 	AddCSLuaFile("weapon_hla_ttt_ammocrate.lua")
 	resource.AddFile("materials/vgui/entities/ttt_ammocrate.png")
+	resource.AddFile("materials/vgui/entities/ttt_ammocrate_nobg.png")
 end
 
 SWEP.HoldType						= "normal"
